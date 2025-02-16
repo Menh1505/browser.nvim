@@ -24,9 +24,9 @@ M.search_engines = {
 
 -- Default keymaps
 M.keymaps = {
-	google = { "<leader>szz", "<CMD>Google <C-R><C-W><CR>", "Search Google" },
-	github = { "<leader>szg", "<CMD>Github <C-R><C-W><CR>", "Search GitHub" },
-	youtube = { "<leader>szy", "<CMD>Youtube <C-R><C-W><CR>", "Search YouTube" },
+	google = { "<leader>szz", ":Google <C-R><C-W><CR>", "Search Google" },
+	github = { "<leader>szg", ":Github <C-R><C-W><CR>", "Search GitHub" },
+	youtube = { "<leader>szy", ":Youtube <C-R><C-W><CR>", "Search YouTube" },
 }
 
 -- Open URL in browser function
@@ -47,12 +47,27 @@ M.open_url = function(url)
 	os.execute(open_cmd .. " " .. url .. " &")
 end
 
+-- Function to encode URL parameters
+local function encode_url_param(str)
+	if str then
+		str = string.gsub(str, "\n", "\r\n")
+		str = string.gsub(str, "([^%w %-%_%.%~])",
+			function(c)
+				return string.format("%%%02X", string.byte(c))
+			end
+		)
+		str = string.gsub(str, " ", "+")
+	end
+	return str
+end
+
 -- Search on website with user settings
 M.search_on_website = function(website, query)
 	log_message("INFO", "Searching on " .. website .. " for: " .. query)
 	local base_url = M.search_engines[website]
 	if base_url then
-		local search_url = base_url .. query
+		local encoded_query = encode_url_param(query)
+		local search_url = base_url .. encoded_query
 		M.open_url(search_url)
 	else
 		log_message("ERROR", "Website " .. website .. " not supported!")
@@ -61,14 +76,18 @@ end
 
 -- Create dynamic commands for each search engine
 M.create_search_commands = function()
+	log_message("INFO", "Creating search commands")
 	for website, _ in pairs(M.search_engines) do
-	  -- Đảm bảo lệnh bắt đầu bằng chữ cái viết hoa
-	  local command_name = website:sub(1, 1):upper() .. website:sub(2)
-	  vim.api.nvim_create_user_command(command_name, function(opts)
-		M.search_on_website(website, opts.args)
-	  end, { nargs = "*" })
+		-- Capitalize first letter of command
+		local command = website:gsub("^%l", string.upper)
+		log_message("DEBUG", "Creating command for: " .. command)
+		vim.api.nvim_create_user_command(command, function(opts)
+			-- Join all arguments with spaces to support multi-word searches
+			local search_term = table.concat(opts.fargs, " ")
+			M.search_on_website(website:lower(), search_term)
+		end, { nargs = "+" })  -- Changed from * to + to require at least one argument
 	end
-  end
+end
 
 -- User settings via setup()
 M.setup = function(config)
