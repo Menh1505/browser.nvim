@@ -1,46 +1,31 @@
-local M = {}
+local M = require("search_plugin")
 
--- Hàm mở URL trong trình duyệt
-M.open_url = function(url)
-  local open_cmd
+-- Call configure from user
+M.setup({
+	search_engines = {
+		stackoverflow = "https://stackoverflow.com/search?q=",
+		-- Add other search engine here
+	},
+	keymaps = {
+		youtube = { "<leader>yo", ":Youtube <C-R><C-W><CR>", "Search on YouTube" },
+		-- Find other keymap here
+	},
+})
 
-  if vim.fn.has("mac") == 1 then
-    open_cmd = "open"
-  elseif vim.fn.has("unix") == 1 then
-    open_cmd = "xdg-open"
-  elseif vim.fn.has("win32") == 1 then
-    open_cmd = "cmd.exe /c start"
-  else
-    print("Không thể mở URL trên hệ điều hành này!")
-    return
-  end
-
-  os.execute(open_cmd .. " " .. url .. " &")
-end
-
--- Hàm tìm kiếm Google
-M.google_search = function(query)
-  local search_url = "https://www.google.com/search?q=" .. query
-  M.open_url(search_url)
-end
-
--- Hàm tìm kiếm Github
-M.github_search = function(query)
-  local search_url = "https://github.com/search?q=" .. query
-  M.open_url(search_url)
-end
-
--- Tạo lệnh :Google
+-- Create command to search
 vim.api.nvim_create_user_command("Google", function(opts)
-  M.google_search(opts.args)
+	local query = opts.args
+	M.search_on_website("google", query)
 end, { nargs = "*" })
 
--- Tạo lệnh :Github
 vim.api.nvim_create_user_command("Github", function(opts)
-  M.github_search(opts.args)
+	local query = opts.args
+	M.search_on_website("github", query)
 end, { nargs = "*" })
 
--- Gọi cấu hình phím tắt
-require("search_plugin.config").set_keymaps()
+vim.api.nvim_create_user_command("Youtube", function(opts)
+	local query = opts.args
+	M.search_on_website("youtube", query)
+end, { nargs = "*" })
 
 return M
