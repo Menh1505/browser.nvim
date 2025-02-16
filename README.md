@@ -82,4 +82,4 @@ return M
 - Github
   - Ex ":Github lazy" to search 'lazy' in Github
 - You can use keymap
-  - Ex <leader>gg to search Google quickly
+  - Ex &lt;leader&gt;gg to search Google quickly
