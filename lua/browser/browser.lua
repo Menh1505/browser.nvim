@@ -24,9 +24,18 @@ M.search_engines = {
 
 -- Default keymaps
 M.keymaps = {
-	google = { "<leader>szz", ":Google <C-R><C-W><CR>", "Search Google" },
-	github = { "<leader>szg", ":Github <C-R><C-W><CR>", "Search GitHub" },
-	youtube = { "<leader>szy", ":Youtube <C-R><C-W><CR>", "Search YouTube" },
+	google = { 
+		{ "<leader>szz", "<CMD>Google <C-R><C-W><CR>", "Search word under cursor on Google" },
+		{ "<leader>szz", "y<CMD>Google <C-R>\"<CR>", mode = "v", "Search selected text on Google" }
+	},
+	github = { 
+		{ "<leader>szg", "<CMD>Github <C-R><C-W><CR>", "Search word under cursor on GitHub" },
+		{ "<leader>szg", "y<CMD>Github <C-R>\"<CR>", mode = "v", "Search selected text on GitHub" }
+	},
+	youtube = { 
+		{ "<leader>szy", "<CMD>Youtube <C-R><C-W><CR>", "Search word under cursor on YouTube" },
+		{ "<leader>szy", "y<CMD>Youtube <C-R>\"<CR>", mode = "v", "Search selected text on YouTube" }
+	},
 }
 
 -- Open URL in browser function
@@ -112,9 +121,16 @@ M.setup = function(config)
 
 	-- Set keymaps for the commands
 	log_message("DEBUG", "Setting up keymaps")
-	for website, keymap in pairs(M.keymaps) do
-		log_message("DEBUG", "Setting keymap for " .. website .. ": " .. keymap[1])
-		vim.api.nvim_set_keymap("n", keymap[1], keymap[2], { noremap = true, silent = true })
+	for website, keymaps in pairs(M.keymaps) do
+		for _, keymap in ipairs(keymaps) do
+			local mode = keymap.mode or "n"  -- Default to normal mode if not specified
+			local opts = {
+				noremap = true,
+				silent = true,
+				desc = keymap[3]
+			}
+			vim.keymap.set(mode, keymap[1], keymap[2], opts)
+		end
 	end
 	
 	log_message("INFO", "browser.nvim setup completed")
