@@ -61,14 +61,14 @@ end
 
 -- Create dynamic commands for each search engine
 M.create_search_commands = function()
-	log_message("INFO", "Creating search commands")
 	for website, _ in pairs(M.search_engines) do
-		log_message("DEBUG", "Creating command for: " .. website)
-		vim.api.nvim_create_user_command(website, function(opts)
-			M.search_on_website(website, opts.args)
-		end, { nargs = "*" })
+	  -- Đảm bảo lệnh bắt đầu bằng chữ cái viết hoa
+	  local command_name = website:sub(1, 1):upper() .. website:sub(2)
+	  vim.api.nvim_create_user_command(command_name, function(opts)
+		M.search_on_website(website, opts.args)
+	  end, { nargs = "*" })
 	end
-end
+  end
 
 -- User settings via setup()
 M.setup = function(config)
