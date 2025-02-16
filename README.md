@@ -62,12 +62,13 @@ require("browser").setup({
     youtube = "https://www.youtube.com/results?search_query=",  -- Thêm YouTube
   },
   keymaps = {
-    google = { "<leader>szz", "<CMD>Google ", "Search Google" },
-    github = { "<leader>szg", "<CMD>Github ", "Search GitHub" },
-    youtube = { "<leader>szy", "<CMD>Youtube ", "Search YouTube" },
+    google = { "<leader>szz", ":Google ", "Search Google" },
+    github = { "<leader>szg", ":Github ", "Search GitHub" },
+    youtube = { "<leader>szy", ":Youtube ", "Search YouTube" },
   }
 })
 ```
+
 ## Use
 
 - Search with Google, use command :Google then type keyword
@@ -76,4 +77,3 @@ require("browser").setup({
   - Ex ":Github lazy" to search 'lazy' in Github
 - You can use keymap
   - Ex &lt;leader&gt;gg to search Google quickly
-
