@@ -6,9 +6,7 @@ A [Neovim](https://neovim.io/) plugin to browse quickly on Google and Github in 
 
 - You can search current keyword without copy then open browser and paste to the search-bar
 - Search with [Github](https://github.com/)
-  :Github
 - Search with [Google](google.com)
-  :Google
 
 ## Installation
 
