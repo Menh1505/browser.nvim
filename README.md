@@ -16,7 +16,7 @@ A [Neovim](https://neovim.io/) plugin to browse quickly on Google and Github in 
 {
   "Menh1505/browser.nvim",
   config = function()
-    require("browser.nvim")
+    require("browser")
   end
 }
 ```
@@ -27,7 +27,7 @@ A [Neovim](https://neovim.io/) plugin to browse quickly on Google and Github in 
 use {
   'Menh1505/browser.nvim',
   config = function()
-    require("browser.nvim")
+    require("browser")
   end
 }
 ```
