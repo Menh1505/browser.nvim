@@ -18,7 +18,7 @@ A [Neovim](https://neovim.io/) plugin to browse quickly on Google and Github in 
 {
   "Menh1505/browser.nvim",
   config = function()
-    require("search_plugin")
+    require("browser.nvim")
   end
 }
 ```
@@ -29,7 +29,7 @@ A [Neovim](https://neovim.io/) plugin to browse quickly on Google and Github in 
 use {
   'Menh1505/browser.nvim',
   config = function()
-    require("search_plugin")
+    require("browser.nvim")
   end
 }
 ```
@@ -38,9 +38,9 @@ use {
 
 ```lua
 {
-  "your_username/search_plugin",
+  "Menh1505/browser.nvim",
   config = function()
-    require("search_plugin").setup({
+    require("browser.nvim").setup({
       search_engines = {
         youtube = "https://www.youtube.com/results?search_query=",  -- Add youtube
       },
@@ -55,4 +55,37 @@ use {
     { "<leader>yt", ":Youtube <C-R><C-W><CR>", desc = "Search on YouTube" },
   }
 }
+```
+
+### Call setup
+
+- Add more engine
+
+```lua
+local M = require("browser.nvim")
+
+M.setup({
+  search_engines = {
+    youtube = "https://www.youtube.com/results?search_query=",
+    stackoverflow = "https://stackoverflow.com/search?q="
+    -- Add more search engine here
+  },
+})
+
+return M
+```
+
+- Add keymap
+
+```lua
+local M = require("browser.nvim")
+
+M.setup({
+  keymaps = {
+    youtube = { "<leader>yo", ":Youtube <C-R><C-W><CR>", "Search on YouTube" },
+    -- Add more keymaps here
+  }
+})
+
+return M
 ```
