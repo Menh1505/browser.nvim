@@ -1,4 +1,18 @@
-vim.notify("Loading browser.browser module", vim.log.levels.INFO)
+-- Get the log file
+local log_path = vim.fn.stdpath('cache') .. '/browser_nvim.log'
+local log_file = io.open(log_path, "a")
+
+-- Function to log messages
+local function log_message(level, msg)
+	if log_file then
+		local timestamp = os.date("%Y-%m-%d %H:%M:%S")
+		log_file:write(string.format("[%s] [%s] %s\n", timestamp, level, msg))
+		log_file:flush()
+	end
+	vim.notify(msg, vim.log.levels[level])
+end
+
+log_message("INFO", "Loading browser.browser module")
 local M = {}
 
 -- Default settings for search engines
@@ -17,7 +31,7 @@ M.keymaps = {
 
 -- Open URL in browser function
 M.open_url = function(url)
-	vim.notify("Attempting to open URL: " .. url, vim.log.levels.DEBUG)
+	log_message("DEBUG", "Attempting to open URL: " .. url)
 	local open_cmd
 	if vim.fn.has("mac") == 1 then
 		open_cmd = "open"
@@ -26,30 +40,30 @@ M.open_url = function(url)
 	elseif vim.fn.has("win32") == 1 then
 		open_cmd = "cmd.exe /c start"
 	else
-		vim.notify("Unsupported system for browser opening", vim.log.levels.ERROR)
+		log_message("ERROR", "Unsupported system for browser opening")
 		return
 	end
-	vim.notify("Using command: " .. open_cmd, vim.log.levels.DEBUG)
+	log_message("DEBUG", "Using command: " .. open_cmd)
 	os.execute(open_cmd .. " " .. url .. " &")
 end
 
 -- Search on website with user settings
 M.search_on_website = function(website, query)
-	vim.notify("Searching on " .. website .. " for: " .. query, vim.log.levels.INFO)
+	log_message("INFO", "Searching on " .. website .. " for: " .. query)
 	local base_url = M.search_engines[website]
 	if base_url then
 		local search_url = base_url .. query
 		M.open_url(search_url)
 	else
-		vim.notify("Website " .. website .. " not supported!", vim.log.levels.ERROR)
+		log_message("ERROR", "Website " .. website .. " not supported!")
 	end
 end
 
 -- Create dynamic commands for each search engine
 M.create_search_commands = function()
-	vim.notify("Creating search commands", vim.log.levels.INFO)
+	log_message("INFO", "Creating search commands")
 	for website, _ in pairs(M.search_engines) do
-		vim.notify("Creating command for: " .. website, vim.log.levels.DEBUG)
+		log_message("DEBUG", "Creating command for: " .. website)
 		vim.api.nvim_create_user_command(website, function(opts)
 			M.search_on_website(website, opts.args)
 		end, { nargs = "*" })
@@ -58,18 +72,18 @@ end
 
 -- User settings via setup()
 M.setup = function(config)
-	vim.notify("Setting up browser.nvim", vim.log.levels.INFO)
+	log_message("INFO", "Setting up browser.nvim")
 	
 	if config then
 		-- Merge user search engine settings
 		if config.search_engines then
-			vim.notify("Merging custom search engines", vim.log.levels.DEBUG)
+			log_message("DEBUG", "Merging custom search engines")
 			M.search_engines = vim.tbl_deep_extend("force", M.search_engines, config.search_engines)
 		end
 
 		-- Merge user keymaps settings
 		if config.keymaps then
-			vim.notify("Merging custom keymaps", vim.log.levels.DEBUG)
+			log_message("DEBUG", "Merging custom keymaps")
 			M.keymaps = vim.tbl_deep_extend("force", M.keymaps, config.keymaps)
 		end
 	end
@@ -78,13 +92,13 @@ M.setup = function(config)
 	M.create_search_commands()
 
 	-- Set keymaps for the commands
-	vim.notify("Setting up keymaps", vim.log.levels.DEBUG)
+	log_message("DEBUG", "Setting up keymaps")
 	for website, keymap in pairs(M.keymaps) do
-		vim.notify("Setting keymap for " .. website .. ": " .. keymap[1], vim.log.levels.DEBUG)
+		log_message("DEBUG", "Setting keymap for " .. website .. ": " .. keymap[1])
 		vim.api.nvim_set_keymap("n", keymap[1], keymap[2], { noremap = true, silent = true })
 	end
 	
-	vim.notify("browser.nvim setup completed", vim.log.levels.INFO)
+	log_message("INFO", "browser.nvim setup completed")
 end
 
 return M
