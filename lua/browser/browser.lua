@@ -24,9 +24,9 @@ M.search_engines = {
 
 -- Default keymaps
 M.keymaps = {
-	google = { "<leader>szz", ":Google " },
-	github = { "<leader>szg", ":Github " },
-	youtube = { "<leader>szy", ":Youtube " },
+	google = { "<leader>szz", "<CMD>Google ", "Search Google" },
+	github = { "<leader>szg", "<CMD>Github ", "Search GitHub" },
+	youtube = { "<leader>szy", "<CMD>Youtube ", "Search YouTube" },
 }
 
 -- Open URL in browser function
