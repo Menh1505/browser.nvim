@@ -69,15 +69,35 @@ M.open_url = function(url)
 	if vim.fn.has("mac") == 1 then
 		open_cmd = "open"
 	elseif vim.fn.has("unix") == 1 then
-		open_cmd = "xdg-open"
+		-- Try to detect default browser on Linux
+		if vim.fn.executable('xdg-open') == 1 then
+			open_cmd = "xdg-open"
+		elseif vim.fn.executable('brave-browser') == 1 then
+			open_cmd = "brave-browser"
+		elseif vim.fn.executable('google-chrome') == 1 then
+			open_cmd = "google-chrome"
+		elseif vim.fn.executable('firefox') == 1 then
+			open_cmd = "firefox"
+		else
+			log_message("ERROR", "No supported browser found")
+			return
+		end
 	elseif vim.fn.has("win32") == 1 then
 		open_cmd = "cmd.exe /c start"
 	else
 		log_message("ERROR", "Unsupported system for browser opening")
 		return
 	end
+	
 	log_message("DEBUG", "Using command: " .. open_cmd)
-	os.execute(open_cmd .. " " .. url .. " &")
+	-- Escape URL for shell
+	url = "'" .. url:gsub("'", "'\\''") .. "'"
+	-- Use nohup to prevent hanging and redirect output to /dev/null
+	if vim.fn.has("unix") == 1 then
+		os.execute("nohup " .. open_cmd .. " " .. url .. " >/dev/null 2>&1 &")
+	else
+		os.execute(open_cmd .. " " .. url .. " &")
+	end
 end
 
 -- Function to encode URL parameters
