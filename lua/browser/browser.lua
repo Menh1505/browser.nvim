@@ -25,16 +25,40 @@ M.search_engines = {
 -- Default keymaps
 M.keymaps = {
 	google = { 
-		{ "<leader>szz", "<CMD>Google <C-r>=expand('<cword>')<CR><CR>", "Search word under cursor on Google" },
-		{ "<leader>szz", "y<CMD>Google <C-r>=vim.fn.getreg('\"')<CR><CR>", mode = "v", "Search selected text on Google" }
+		{ "<leader>szz", function() 
+			vim.cmd('Google ' .. vim.fn.expand('<cword>'))
+		end, "Search word under cursor on Google" },
+		{ "<leader>szz", function()
+			local saved = vim.fn.getreg('v')
+			vim.cmd('normal! y')
+			local selected = vim.fn.getreg('\"')
+			vim.fn.setreg('v', saved)
+			vim.cmd('Google ' .. selected)
+		end, mode = "v", "Search selected text on Google" }
 	},
 	github = { 
-		{ "<leader>szg", "<CMD>Github <C-r>=expand('<cword>')<CR><CR>", "Search word under cursor on GitHub" },
-		{ "<leader>szg", "y<CMD>Github <C-r>=vim.fn.getreg('\"')<CR><CR>", mode = "v", "Search selected text on GitHub" }
+		{ "<leader>szg", function()
+			vim.cmd('Github ' .. vim.fn.expand('<cword>'))
+		end, "Search word under cursor on GitHub" },
+		{ "<leader>szg", function()
+			local saved = vim.fn.getreg('v')
+			vim.cmd('normal! y')
+			local selected = vim.fn.getreg('\"')
+			vim.fn.setreg('v', saved)
+			vim.cmd('Github ' .. selected)
+		end, mode = "v", "Search selected text on GitHub" }
 	},
 	youtube = { 
-		{ "<leader>szy", "<CMD>Youtube <C-r>=expand('<cword>')<CR><CR>", "Search word under cursor on YouTube" },
-		{ "<leader>szy", "y<CMD>Youtube <C-r>=vim.fn.getreg('\"')<CR><CR>", mode = "v", "Search selected text on YouTube" }
+		{ "<leader>szy", function()
+			vim.cmd('Youtube ' .. vim.fn.expand('<cword>'))
+		end, "Search word under cursor on YouTube" },
+		{ "<leader>szy", function()
+			local saved = vim.fn.getreg('v')
+			vim.cmd('normal! y')
+			local selected = vim.fn.getreg('\"')
+			vim.fn.setreg('v', saved)
+			vim.cmd('Youtube ' .. selected)
+		end, mode = "v", "Search selected text on YouTube" }
 	},
 }
 
