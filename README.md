@@ -46,7 +46,7 @@ M.setup({
     -- Add more search engine here
   },
   keymaps = {
-    youtube = { "<leader>yo", ":Youtube <C-R><C-W><CR>", "Search on YouTube" },
+    youtube = { "<leader>szy", ":Youtube ", "Search on YouTube" },
     -- Add more keymaps here
   }
 })
@@ -62,9 +62,9 @@ require("browser").setup({
     youtube = "https://www.youtube.com/results?search_query=",  -- Thêm YouTube
   },
   keymaps = {
-    google = { "<leader>gg", ":Google <C-R><C-W><CR>", "Search Google" },
-    github = { "<leader>gh", ":Github <C-R><C-W><CR>", "Search GitHub" },
-    youtube = { "<leader>yt", ":Youtube <C-R><C-W><CR>", "Search YouTube" },
+    google = { "<leader>szz", ":Google ", "Search Google" },
+    github = { "<leader>szg", ":Github ", "Search GitHub" },
+    youtube = { "<leader>szy", ":Youtube ", "Search YouTube" },
   }
 })
 ```
