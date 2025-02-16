@@ -25,16 +25,16 @@ M.search_engines = {
 -- Default keymaps
 M.keymaps = {
 	google = { 
-		{ "<leader>szz", "<CMD>Google <C-R><C-W><CR>", "Search word under cursor on Google" },
-		{ "<leader>szz", "y<CMD>Google <C-R>\"<CR>", mode = "v", "Search selected text on Google" }
+		{ "<leader>szz", "<CMD>Google <C-r>=expand('<cword>')<CR><CR>", "Search word under cursor on Google" },
+		{ "<leader>szz", "y<CMD>Google <C-r>=vim.fn.getreg('\"')<CR><CR>", mode = "v", "Search selected text on Google" }
 	},
 	github = { 
-		{ "<leader>szg", "<CMD>Github <C-R><C-W><CR>", "Search word under cursor on GitHub" },
-		{ "<leader>szg", "y<CMD>Github <C-R>\"<CR>", mode = "v", "Search selected text on GitHub" }
+		{ "<leader>szg", "<CMD>Github <C-r>=expand('<cword>')<CR><CR>", "Search word under cursor on GitHub" },
+		{ "<leader>szg", "y<CMD>Github <C-r>=vim.fn.getreg('\"')<CR><CR>", mode = "v", "Search selected text on GitHub" }
 	},
 	youtube = { 
-		{ "<leader>szy", "<CMD>Youtube <C-R><C-W><CR>", "Search word under cursor on YouTube" },
-		{ "<leader>szy", "y<CMD>Youtube <C-R>\"<CR>", mode = "v", "Search selected text on YouTube" }
+		{ "<leader>szy", "<CMD>Youtube <C-r>=expand('<cword>')<CR><CR>", "Search word under cursor on YouTube" },
+		{ "<leader>szy", "y<CMD>Youtube <C-r>=vim.fn.getreg('\"')<CR><CR>", mode = "v", "Search selected text on YouTube" }
 	},
 }
 
