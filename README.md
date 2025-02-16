@@ -57,22 +57,16 @@ return M
 - Using lazy.nvim
 
 ```lua
-{
-  "Menh1505/browser.nvim",
-  config = function()
-    require("search_plugin").setup({
-      search_engines = {
-        youtube = "https://www.youtube.com/results?search_query=",  -- Thêm YouTube
-        stackoverflow = "https://stackoverflow.com/search?q="  -- Thêm StackOverflow
-      }
-    })
-  end,
-  keys = {
-    { "<leader>gg", ":Google <C-R><C-W><CR>", desc = "Search on Google" },
-    { "<leader>gh", ":Github <C-R><C-W><CR>", desc = "Search on GitHub" },
-    { "<leader>yt", ":Youtube <C-R><C-W><CR>", desc = "Search on YouTube" },
+require("browser").setup({
+  search_engines = {
+    youtube = "https://www.youtube.com/results?search_query=",  -- Thêm YouTube
+  },
+  keymaps = {
+    google = { "<leader>gg", ":Google <C-R><C-W><CR>", "Search Google" },
+    github = { "<leader>gh", ":Github <C-R><C-W><CR>", "Search GitHub" },
+    youtube = { "<leader>yt", ":Youtube <C-R><C-W><CR>", "Search YouTube" },
   }
-}
+})
 ```
 
 ## Use
