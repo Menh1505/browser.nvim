@@ -1,5 +1,5 @@
 -- Get the log file
-local log_path = vim.fn.stdpath('cache') .. '/browser_nvim.log'
+local log_path = vim.fn.stdpath("cache") .. "/browser_nvim.log"
 local log_file = io.open(log_path, "a")
 
 -- Function to log messages
@@ -12,7 +12,7 @@ local function log_message(level, msg)
 	vim.notify(msg, vim.log.levels[level])
 end
 
-log_message("INFO", "Loading browser.browser module")
+-- log_message("INFO", "Loading browser.browser module")
 local M = {}
 
 -- Default settings for search engines
@@ -24,47 +24,74 @@ M.search_engines = {
 
 -- Default keymaps
 M.keymaps = {
-	google = { 
-		{ "<leader>szz", function() 
-			vim.cmd('Google ' .. vim.fn.expand('<cword>'))
-		end, "Search word under cursor on Google" },
-		{ "<leader>szz", function()
-			local saved = vim.fn.getreg('v')
-			vim.cmd('normal! y')
-			local selected = vim.fn.getreg('\"')
-			vim.fn.setreg('v', saved)
-			vim.cmd('Google ' .. selected)
-		end, mode = "v", "Search selected text on Google" }
+	google = {
+		{
+			"<leader>szz",
+			function()
+				vim.cmd("Google " .. vim.fn.expand("<cword>"))
+			end,
+			"Search word under cursor on Google",
+		},
+		{
+			"<leader>szz",
+			function()
+				local saved = vim.fn.getreg("v")
+				vim.cmd("normal! y")
+				local selected = vim.fn.getreg('"')
+				vim.fn.setreg("v", saved)
+				vim.cmd("Google " .. selected)
+			end,
+			mode = "v",
+			"Search selected text on Google",
+		},
 	},
-	github = { 
-		{ "<leader>szg", function()
-			vim.cmd('Github ' .. vim.fn.expand('<cword>'))
-		end, "Search word under cursor on GitHub" },
-		{ "<leader>szg", function()
-			local saved = vim.fn.getreg('v')
-			vim.cmd('normal! y')
-			local selected = vim.fn.getreg('\"')
-			vim.fn.setreg('v', saved)
-			vim.cmd('Github ' .. selected)
-		end, mode = "v", "Search selected text on GitHub" }
+	github = {
+		{
+			"<leader>szg",
+			function()
+				vim.cmd("Github " .. vim.fn.expand("<cword>"))
+			end,
+			"Search word under cursor on GitHub",
+		},
+		{
+			"<leader>szg",
+			function()
+				local saved = vim.fn.getreg("v")
+				vim.cmd("normal! y")
+				local selected = vim.fn.getreg('"')
+				vim.fn.setreg("v", saved)
+				vim.cmd("Github " .. selected)
+			end,
+			mode = "v",
+			"Search selected text on GitHub",
+		},
 	},
-	youtube = { 
-		{ "<leader>szy", function()
-			vim.cmd('Youtube ' .. vim.fn.expand('<cword>'))
-		end, "Search word under cursor on YouTube" },
-		{ "<leader>szy", function()
-			local saved = vim.fn.getreg('v')
-			vim.cmd('normal! y')
-			local selected = vim.fn.getreg('\"')
-			vim.fn.setreg('v', saved)
-			vim.cmd('Youtube ' .. selected)
-		end, mode = "v", "Search selected text on YouTube" }
+	youtube = {
+		{
+			"<leader>szy",
+			function()
+				vim.cmd("Youtube " .. vim.fn.expand("<cword>"))
+			end,
+			"Search word under cursor on YouTube",
+		},
+		{
+			"<leader>szy",
+			function()
+				local saved = vim.fn.getreg("v")
+				vim.cmd("normal! y")
+				local selected = vim.fn.getreg('"')
+				vim.fn.setreg("v", saved)
+				vim.cmd("Youtube " .. selected)
+			end,
+			mode = "v",
+			"Search selected text on YouTube",
+		},
 	},
 }
 
 -- Open URL in browser function
 M.open_url = function(url)
-	log_message("DEBUG", "Attempting to open URL: " .. url)
+	-- log_message("DEBUG", "Attempting to open URL: " .. url)
 	local open_cmd
 	if vim.fn.has("mac") == 1 then
 		open_cmd = "open"
@@ -76,7 +103,7 @@ M.open_url = function(url)
 		log_message("ERROR", "Unsupported system for browser opening")
 		return
 	end
-	log_message("DEBUG", "Using command: " .. open_cmd)
+	-- log_message("DEBUG", "Using command: " .. open_cmd)
 	os.execute(open_cmd .. " " .. url .. " &")
 end
 
@@ -84,11 +111,9 @@ end
 local function encode_url_param(str)
 	if str then
 		str = string.gsub(str, "\n", "\r\n")
-		str = string.gsub(str, "([^%w %-%_%.%~])",
-			function(c)
-				return string.format("%%%02X", string.byte(c))
-			end
-		)
+		str = string.gsub(str, "([^%w %-%_%.%~])", function(c)
+			return string.format("%%%02X", string.byte(c))
+		end)
 		str = string.gsub(str, " ", "+")
 	end
 	return str
@@ -109,33 +134,33 @@ end
 
 -- Create dynamic commands for each search engine
 M.create_search_commands = function()
-	log_message("INFO", "Creating search commands")
+	-- log_message("INFO", "Creating search commands")
 	for website, _ in pairs(M.search_engines) do
 		-- Capitalize first letter of command
 		local command = website:gsub("^%l", string.upper)
-		log_message("DEBUG", "Creating command for: " .. command)
+		-- log_message("DEBUG", "Creating command for: " .. command)
 		vim.api.nvim_create_user_command(command, function(opts)
 			-- Join all arguments with spaces to support multi-word searches
 			local search_term = table.concat(opts.fargs, " ")
 			M.search_on_website(website:lower(), search_term)
-		end, { nargs = "+" })  -- Changed from * to + to require at least one argument
+		end, { nargs = "+" }) -- Changed from * to + to require at least one argument
 	end
 end
 
 -- User settings via setup()
 M.setup = function(config)
-	log_message("INFO", "Setting up browser.nvim")
-	
+	-- log_message("INFO", "Setting up browser.nvim")
+
 	if config then
 		-- Merge user search engine settings
 		if config.search_engines then
-			log_message("DEBUG", "Merging custom search engines")
+			-- log_message("DEBUG", "Merging custom search engines")
 			M.search_engines = vim.tbl_deep_extend("force", M.search_engines, config.search_engines)
 		end
 
 		-- Merge user keymaps settings
 		if config.keymaps then
-			log_message("DEBUG", "Merging custom keymaps")
+			-- log_message("DEBUG", "Merging custom keymaps")
 			M.keymaps = vim.tbl_deep_extend("force", M.keymaps, config.keymaps)
 		end
 	end
@@ -144,19 +169,19 @@ M.setup = function(config)
 	M.create_search_commands()
 
 	-- Set keymaps for the commands
-	log_message("DEBUG", "Setting up keymaps")
+	-- log_message("DEBUG", "Setting up keymaps")
 	for website, keymaps in pairs(M.keymaps) do
 		for _, keymap in ipairs(keymaps) do
-			local mode = keymap.mode or "n"  -- Default to normal mode if not specified
+			local mode = keymap.mode or "n" -- Default to normal mode if not specified
 			local opts = {
 				noremap = true,
 				silent = true,
-				desc = keymap[3]
+				desc = keymap[3],
 			}
 			vim.keymap.set(mode, keymap[1], keymap[2], opts)
 		end
 	end
-	
+
 	log_message("INFO", "browser.nvim setup completed")
 end
 
