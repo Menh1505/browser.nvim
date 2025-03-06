@@ -26,14 +26,14 @@ M.search_engines = {
 M.keymaps = {
 	google = {
 		{
-			"<A-s>s",
+			"<M-s>s",
 			function()
 				vim.cmd("Google " .. vim.fn.expand("<cword>"))
 			end,
 			"Search word under cursor on Google",
 		},
 		{
-			"<A-s>g",
+			"<M-s>g",
 			function()
 				local saved = vim.fn.getreg("v")
 				vim.cmd("normal! y")
@@ -47,14 +47,14 @@ M.keymaps = {
 	},
 	github = {
 		{
-			"<A-s>G",
+			"<M-s>G",
 			function()
 				vim.cmd("Github " .. vim.fn.expand("<cword>"))
 			end,
 			"Search word under cursor on GitHub",
 		},
 		{
-			"<A-s>G",
+			"<M-s>G",
 			function()
 				local saved = vim.fn.getreg("v")
 				vim.cmd("normal! y")
@@ -68,14 +68,14 @@ M.keymaps = {
 	},
 	youtube = {
 		{
-			"<A-s>y",
+			"<M-s>y",
 			function()
 				vim.cmd("Youtube " .. vim.fn.expand("<cword>"))
 			end,
 			"Search word under cursor on YouTube",
 		},
 		{
-			"<A-s>y",
+			"<M-s>y",
 			function()
 				local saved = vim.fn.getreg("v")
 				vim.cmd("normal! y")
